@@ -2,6 +2,16 @@ if not _G.class then
     return
 end
 
+local system = require("utils.LuaRuntime").getSystemName()
+
+local command
+
+if system == "Android" or system == "Linux" then
+    command = "sleep"
+elseif system == "Windows" then
+    command = "timeout"
+end
+
 local ticker = class {
     name = "Ticker",
     fields = {
@@ -28,8 +38,7 @@ local ticker = class {
                 if elapsedTime < self.period then
                     -- 等待剩余时间
                     local remainingTime = self.period - elapsedTime
-                    -- os.execute("sleep " .. remainingTime / 1000)
-                    os.execute("timeout " .. math.floor(remainingTime / 1000))
+                    os.execute(command .. " " .. math.floor(remainingTime / 1000))
                 end
             end
         end,
