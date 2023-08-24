@@ -21,8 +21,8 @@ local app = function()
         return copy
     end
 
-    _G.null = require("LuaMetaClass.Null")
-    _G.class = require("LuaMetaClass.class")
+    _G.null = require("Null")
+    _G.class = require("class")
 end
 
 return app

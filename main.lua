@@ -1,4 +1,4 @@
-require("LuaMetaClass.MyApplication")()
+require("MyApplication")()
 
 -- 定义基类
 local Person = class {
@@ -74,7 +74,7 @@ print(tostring(KFC))
 print(KFC.Crazy)
 KFC.V50()
 
-local Ticker = require("LuaMetaClass.utils.Ticker")
+local Ticker = require("utils.Ticker")
 
 local ti = Ticker()
 ti:setOnTickListener(function()

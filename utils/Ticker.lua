@@ -2,14 +2,6 @@ if not _G.class then
     return
 end
 
-local command = ""
-xpcall(function ()
-    os.execute("sleep")
-    command = "sleep"
-end,function ()
-    command = "timeout"
-end)
-
 local ticker = class {
     name = "Ticker",
     fields = {
@@ -37,7 +29,7 @@ local ticker = class {
                     -- 等待剩余时间
                     local remainingTime = self.period - elapsedTime
                     -- os.execute("sleep " .. remainingTime / 1000)
-                    os.execute(command .. " " .. math.floor(remainingTime / 1000))
+                    os.execute("timeout " .. math.floor(remainingTime / 1000))
                 end
             end
         end,
