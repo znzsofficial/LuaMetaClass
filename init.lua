@@ -1,4 +1,7 @@
 local app = function()
+    ---@param orig any
+    ---@param copies any|nil
+    ---@return any
     function table.clone(orig, copies)
         copies = copies or {} -- 用于存储已拷贝的表及其副本
 
@@ -26,22 +29,38 @@ local app = function()
         {
             __index =
             {
+                ---@param self boolean
+                ---@return boolean
                 ["not"] = function(self)
                     return not self
                 end,
+                ---@param self boolean
+                ---@return string
                 toString = function(self)
                     return tostring(self)
                 end,
+                ---@param x boolean
+                ---@param y boolean
+                ---@return integer
                 compareTo = function(x, y)
                     return (x == y) and 0 or (x and 1 or -1)
                     -- return (x and 1 or 0) - (y and 1 or 0)
                 end,
+                ---@param x boolean
+                ---@param y boolean
+                ---@return boolean
                 equals = function(x, y)
                     return x == y
                 end,
+                ---@param x boolean
+                ---@param y boolean
+                ---@return boolean
                 xor = function(x, y)
                     return (x and not y) or (not x and y)
                 end,
+                ---@param x boolean
+                ---@param y boolean
+                ---@return boolean
                 ["or"] = function(x, y)
                     return x or y
                 end

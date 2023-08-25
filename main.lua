@@ -74,11 +74,20 @@ print(tostring(KFC))
 print(KFC.Crazy)
 KFC.V50()
 
+
+
 local Ticker = require("utils.Ticker")
 
+local count = 0
+
 local ti = Ticker()
+
 ti:setOnTickListener(function()
   print("onTick")
-  ti:stop()
+  count = count + 1
+  if count == 10 then
+    ti:stop()
+  end
 end)
+
 ti:start()

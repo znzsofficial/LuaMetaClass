@@ -2,15 +2,15 @@ if not _G.class then
     return
 end
 
-local system = require("utils.LuaRuntime").getSystemName()
 local commands = {
     Android = "sleep", 
     Linux = "sleep", 
     Windows = "timeout"
 }
 
-local command = commands[system]
+local command = commands[require("utils.LuaRuntime").getSystemName()]
 
+---@class Ticker
 return class {
     name = "Ticker",
     fields = {
@@ -19,6 +19,8 @@ return class {
         onTick = null,
     },
     methods = {
+        ---@param self any
+        ---@param func function
         setOnTickListener = function(self, func)
             self.onTick = func
         end,
