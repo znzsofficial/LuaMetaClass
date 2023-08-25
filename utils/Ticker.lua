@@ -3,16 +3,15 @@ if not _G.class then
 end
 
 local system = require("utils.LuaRuntime").getSystemName()
+local commands = {
+    Android = "sleep", 
+    Linux = "sleep", 
+    Windows = "timeout"
+}
 
-local command
+local command = commands[system]
 
-if system == "Android" or system == "Linux" then
-    command = "sleep"
-elseif system == "Windows" then
-    command = "timeout"
-end
-
-local ticker = class {
+return class {
     name = "Ticker",
     fields = {
         period = 100,
@@ -48,5 +47,3 @@ local ticker = class {
     }
 
 }
-
-return ticker

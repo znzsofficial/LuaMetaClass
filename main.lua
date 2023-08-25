@@ -1,4 +1,4 @@
-require("MyApplication")()
+require("init")()
 
 -- 定义基类
 local Person = class {
