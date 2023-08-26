@@ -1,4 +1,4 @@
-local app = function()
+return function()
     ---@param orig any
     ---@param copies any|nil
     ---@return any
@@ -23,7 +23,10 @@ local app = function()
         setmetatable(copy, table.clone(getmetatable(orig), copies))
         return copy
     end
-
+    -- 将math作为number类型的元表
+    debug.setmetatable(0,{__index=math})
+    -- 将字符串类型的元表修改为utf8
+    debug.setmetatable("",{__index=utf8})
     -- 拓展布尔类型
     debug.setmetatable(false,
         {
@@ -72,5 +75,3 @@ local app = function()
     _G.null = require("Null")
     _G.class = require("class")
 end
-
-return app
