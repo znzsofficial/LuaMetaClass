@@ -74,6 +74,7 @@ print(KFC)
 print(KFC.Crazy)
 KFC.V50()
 
+-- print(dump(KFC))
 
 local Ticker = require("utils.Ticker")
 

@@ -70,7 +70,7 @@ return function(config)
         function cls:__constructor(...)
             -- 设置实例对象的元表
             local __mt = table.clone(self)
-            math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 6)))
+            math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,7)))
             __mt.__id = math.random(1, 1000000000)
             __mt.__tostring = function(self)
                 return self.__name .. " @" .. self.__id

@@ -26,7 +26,7 @@ return function()
     -- 将math作为number类型的元表
     debug.setmetatable(0,{__index=math})
     -- 将字符串类型的元表修改为utf8
-    debug.setmetatable("",{__index=utf8})
+    -- debug.setmetatable("",{__index=utf8})
     -- 拓展布尔类型
     debug.setmetatable(false,
         {
@@ -72,6 +72,7 @@ return function()
 
     _G.private = require("annotations.private")
     _G.public = require("annotations.public")
+    _G.dump = require("dump")
     _G.null = require("Null")
     _G.class = require("class")
 end
