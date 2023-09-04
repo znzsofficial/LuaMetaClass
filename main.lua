@@ -1,8 +1,7 @@
 require("init")()
 
 -- 定义基类
-local Person = class {
-  name = "Person",
+local Person = class "Person" {
   open = true,
   init = function(self, name, age)
     self.name = name
@@ -24,8 +23,7 @@ local Person = class {
 }
 
 -- 定义派生类
-local Employee = class {
-  name = "Employee",
+local Employee = class "Employee" {
   extend = Person,
   init = function(self, super, name, age, position)
     super(name, age)
@@ -58,8 +56,7 @@ print(emp:getSpecies())
 print(tostring(emp))
 print(type(empx))
 
-local KFC = class {
-  name = "KFC",
+local KFC = class "KFC" {
   static = true,
   fields = {
     Crazy = "Thursday",
@@ -85,7 +82,7 @@ local ti = Ticker()
 ti:setOnTickListener(function()
   print("onTick")
   count = count + 1
-  if count == 2 then
+  if count == 1 then
     ti:stop()
   end
 end)

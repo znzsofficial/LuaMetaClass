@@ -11,8 +11,7 @@ local commands = {
 local command = commands[require("utils.LuaRuntime").getSystemName()]
 
 ---@class Ticker
-return class {
-    name = "Ticker",
+return class "Ticker" {
     fields = {
         period = 100,
         enabled = false,
