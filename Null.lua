@@ -1,4 +1,4 @@
----@class Null
+---@class null
 return setmetatable({}, {
     __tostring = (function()
         return "null"

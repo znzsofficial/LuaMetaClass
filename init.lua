@@ -73,6 +73,6 @@ return function()
     _G.private = require("annotations.private")
     _G.public = require("annotations.public")
     _G.dump = require("dump")
-    _G.null = require("Null")
+    _G.null = require("null")
     _G.class = require("class")
 end
