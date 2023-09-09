@@ -30,12 +30,13 @@ return setmetatable({
 
         -- 判断是否继承自另一个类
         if type(cls.__extend) == "table" and cls.__extend ~= null then
+            if not cls.__extend then
+                error("InvalidExtendException : " ..
+                    tostring(cls) .. " Attempt to extend a table value")
+            end
             -- 判断是否使用 open 修饰符
             if not cls.__extend.__open then
                 error("InvalidExtendException : Attempt to extend a final class " .. cls.__extend.__name)
-            elseif not cls.__extend.__name then
-                error("InvalidExtendException : " ..
-                    tostring(cls) .. " Attempt to extend a table value")
             end
         elseif cls.__extend ~= null then
             -- 如果父类不是一个 class，则报错
