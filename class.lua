@@ -15,9 +15,6 @@ return setmetatable({
         -- 设置 open 修饰符，如果没有提供，则默认为 false
         cls.__open = config.open
             or false
-        -- 设置 static 修饰符，如果没有提供，则默认为 false
-        cls.__static = config.static
-            or false
         -- 设置 tostring 元方法，用于显示类名
         cls.__tostring = function(self)
             return "class " .. self.__name
@@ -29,10 +26,6 @@ return setmetatable({
         end
         -- 设置 call 元方法，用于创建实例
         cls.__call = function(self, ...)
-            -- 如果是静态类，则报错
-            if self.__static then
-                error("InstantiationException : Attempt to instantiate a static class " .. self.__name)
-            end
             return self:__constructor(...)
         end
         cls.__extend = config.extend or null

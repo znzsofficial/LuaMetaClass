@@ -57,7 +57,6 @@ print(emp:getSpecies())
 print(tostring(emp))
 
 local KFC = object "KFC" {
-  static = true,
   fields = {
     Crazy = "Thursday",
   },
