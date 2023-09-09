@@ -1,37 +1,36 @@
-local function processValue(value)
-  if type(value) == "function" then
-    -- 函数类型处理
-    local info = debug.getinfo(value, "Slnuf")
-    local infoStr = ""
-    for key, value in pairs(info) do
-      if key ~= "func" and value ~= "" then
-        infoStr = infoStr .. indent .. "" .. key .. ": " .. tostring(value) .. "\n"
-      end
-    end
-    return "<function>" .. tostring(value) .. "\n" .. infoStr
-  elseif type(value) == "table" then
-    -- 表类型处理
-    local str = dump(value, seen, indent .. " ")
-    if getmetatable(value) then
-      str = str .. "\n" .. indent .. "<metatable> =" .. dump(getmetatable(value), seen, indent .. " ")
-    end
-    return "<table>" .. str
-  elseif type(value) == "string" then
-    -- 字符串类型处理
-    return "<string> \"" .. tostring(value) .. "\""
-  else
-    -- 其他类型直接返回
-    return "<" .. type(value) .. ">" .. tostring(value)
-  end
-end
-
----@param t table<any>
+---@param t table
 ---@param seen table
 ---@param indent string
 return function(t, seen, indent)
   seen = seen or {}
   indent = indent or ""
 
+  local function processValue(value)
+    if type(value) == "function" then
+      -- 函数类型处理
+      local info = debug.getinfo(value, "Slnuf")
+      local infoStr = ""
+      for key, value in pairs(info) do
+        if key ~= "func" and value ~= "" then
+          infoStr = infoStr .. indent .. "" .. key .. ": " .. tostring(value) .. "\n"
+        end
+      end
+      return "<function>" .. tostring(value) .. "\n" .. infoStr
+    elseif type(value) == "table" then
+      -- 表类型处理
+      local str = dump(value, seen, indent .. " ")
+      if getmetatable(value) then
+        str = str .. "\n" .. indent .. "<metatable> =" .. dump(getmetatable(value), seen, indent .. " ")
+      end
+      return "<table>" .. str
+    elseif type(value) == "string" then
+      -- 字符串类型处理
+      return "<string> \"" .. tostring(value) .. "\""
+    else
+      -- 其他类型直接返回
+      return "<" .. type(value) .. ">" .. tostring(value)
+    end
+  end
 
   if type(t) ~= "table" then
     return tostring(t)

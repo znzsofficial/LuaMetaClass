@@ -3,9 +3,6 @@ return setmetatable({}, {
     __tostring = (function()
         return "null"
     end),
-    __type = (function()
-        return "null"
-    end),
     __call = (function()
         return nil
     end),

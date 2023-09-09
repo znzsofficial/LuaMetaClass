@@ -3,7 +3,6 @@ return setmetatable({
         -- 创建一个空的表，用于存储类
         local cls = {}
 
-        -- 设置索引元方法，指向类本身
         cls.__index = cls
         -- 设置类名，如果没有提供，则默认为 Unnamed
         cls.__name = type(name) == "string"
@@ -19,19 +18,12 @@ return setmetatable({
         -- 设置 static 修饰符，如果没有提供，则默认为 false
         cls.__static = config.static
             or false
-        -- 设置类型函数，用于返回字符串 "class"
-        cls.__type = function()
-            return "class"
-        end
         -- 设置 tostring 元方法，用于显示类名
         cls.__tostring = function(self)
             return "class " .. self.__name
         end
         -- 设置相等性的比较函数，比较类名是否相同
         cls.__eq = function(self, other)
-            if not type(other) == "class" then
-                return false
-            end
             return rawequal(self, other)
                 or (getmetatable(self).__name == getmetatable(other).__name)
         end
@@ -43,43 +35,40 @@ return setmetatable({
             end
             return self:__constructor(...)
         end
-
-        -- 判断是否继承自另一个类
-        if type(config.extend) == "class" then
-            -- 判断是否使用 open 修饰符
-            if not config.extend.__open then
-                error("InvalidExtendException : Attempt to extend a final class " .. config.extend.__name)
-            end
-        elseif config.extend
-            and config.extend ~= null then
-            -- 如果父类不是一个 class，则报错
-            error("InvalidExtendException : Attempt to extend a " .. type(config.extend))
-        end
+        cls.__extend = config.extend or null
 
         -- 设置元表，用于处理类的各种操作
         setmetatable(cls, {
-            __index = config.extend,
+            __index = cls.__extend,
             __tostring = cls.__tostring,
             __call = cls.__call,
             __eq = cls.__eq,
-            __type = cls.__type,
         })
+
+        -- 判断是否继承自另一个类
+        if type(cls.__extend) == "table" and cls.__extend ~= null then
+            -- 判断是否使用 open 修饰符
+            if not cls.__extend.__open then
+                error("InvalidExtendException : Attempt to extend a final class " .. cls.__extend.__name)
+            elseif not cls.__extend.__name then
+                error("InvalidExtendException : " ..
+                    tostring(cls) .. " Attempt to extend a table value")
+            end
+        elseif cls.__extend ~= null then
+            -- 如果父类不是一个 class，则报错
+            error("InvalidExtendException : " ..
+                tostring(cls) .. " Attempt to extend a " .. type(cls.__extend) .. " value")
+        end
+
         -- 设置实例构造器
         function cls:__constructor(...)
             -- 设置实例对象的元表
             local __mt = table.clone(self)
-            math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 7)))
             __mt.__id = math.random(1, 1000000000)
             __mt.__tostring = function(self)
                 return self.__name .. " @" .. self.__id
             end
-            __mt.__type = function()
-                return "object"
-            end
             __mt.__eq = function(self, other)
-                if not type(other) == "object" then
-                    return false
-                end
                 return rawequal(self, other)
                     or (getmetatable(self).__name == getmetatable(other).__name)
             end
@@ -89,21 +78,9 @@ return setmetatable({
 
             -- 创建一个空表，作为实例对象
             local instance = setmetatable({}, __mt)
-
             -- 如果存在初始化函数，则调用
             if type(self.__init) == "function" then
-                -- 处理父类初始化函数
-                local super = config.extend
-                    and type(config.extend.__init) == "function"
-                    and function(...)
-                        return config.extend.__init(instance, ...)
-                    end
-                -- 如果存在，则传递给子类
-                if super then
-                    self.__init(instance, super, ...)
-                else
-                    self.__init(instance, ...)
-                end
+                self.__init(instance, ...)
             end
 
             -- 返回实例
@@ -150,9 +127,9 @@ return setmetatable({
         end
 
         -- 使用 overrides 表重写父类方法
-        if type(config.overrides) == "table" and config.extend then
+        if type(config.overrides) == "table" and cls.__extend ~= null then
             for name, fn in pairs(config.overrides) do
-                local super = rawget(config.extend, name)
+                local super = rawget(cls.__extend, name)
                 if super then
                     -- 如果父类中也存在该方法，则将它包装起来，并传递给子类的函数
                     cls[name] = function(self, ...)
@@ -161,7 +138,8 @@ return setmetatable({
                         end, ...)
                     end
                 else
-                    error("MethodNotFoundException : Can not find method " .. name .. " in base class")
+                    error("MethodNotFoundException : Can not find method " ..
+                        name .. " in base class " .. tostring(cls.__extend))
                 end
             end
         end

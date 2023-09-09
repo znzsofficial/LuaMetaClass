@@ -25,8 +25,8 @@ local Person = class "Person" {
 -- 定义派生类
 local Employee = class "Employee" {
   extend = Person,
-  init = function(self, super, name, age, position)
-    super(name, age)
+  init = function(self, name, age, position)
+    self.__extend:__init(name, age)
     self.position = position
   end,
   overrides = {
@@ -50,11 +50,11 @@ emp:say("加入时光帝国")
 emp:todo("开发时光客App")
 empx:say("lua 得了相思病")
 
+print(yjp)
 -- 访问final属性
 print(emp:getSpecies())
 -- 打印对象
 print(tostring(emp))
-print(type(empx))
 
 local KFC = object "KFC" {
   static = true,
