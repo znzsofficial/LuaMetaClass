@@ -141,7 +141,7 @@ return setmetatable({
         if type(config.methods) == "table" then
             for name, fn in pairs(config.methods) do
                 if not type(fn) == "function" then
-                    error("InvalidMethodException : Method must be a function or a lambda expression")
+                    error("InvalidMethodException : Method must be a function")
                 elseif cls[name] and cls[name] ~= null then
                     error("RedefinedVariableException : Attempt to assign a defined value " .. name)
                 end

@@ -31,8 +31,7 @@ return setmetatable({
         end
         -- 设置 call 元方法，用于创建实例
         cls.__call = function(self)
-                error("InstantiationException : Attempt to instantiate a object " .. self.__name)
-            
+            error("InstantiationException : Attempt to instantiate a object " .. self.__name)
         end
 
         -- 判断是否继承自另一个类
@@ -69,7 +68,7 @@ return setmetatable({
         if type(config.methods) == "table" then
             for name, fn in pairs(config.methods) do
                 if not type(fn) == "function" then
-                    error("InvalidMethodException : Method must be a function or a lambda expression")
+                    error("InvalidMethodException : Method must be a function")
                 elseif cls[name] and cls[name] ~= null then
                     error("RedefinedVariableException : Attempt to assign a defined value " .. name)
                 end
