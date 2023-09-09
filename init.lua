@@ -75,4 +75,5 @@ return function()
     _G.dump = require("dump")
     _G.null = require("null")
     _G.class = require("class")
+    _G.object = require("object")
 end

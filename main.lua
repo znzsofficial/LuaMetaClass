@@ -56,7 +56,7 @@ print(emp:getSpecies())
 print(tostring(emp))
 print(type(empx))
 
-local KFC = class "KFC" {
+local KFC = object "KFC" {
   static = true,
   fields = {
     Crazy = "Thursday",
