@@ -23,10 +23,11 @@ return function()
         setmetatable(copy, table.clone(getmetatable(orig), copies))
         return copy
     end
+
     -- 将math作为number类型的元表
-    debug.setmetatable(0,{__index=math})
-    -- 将字符串类型的元表修改为utf8
-    -- debug.setmetatable("",{__index=utf8})
+    debug.setmetatable(0, { __index = math })
+    -- 将字符串类型的元表修改为utf8和string混合
+    debug.setmetatable("", { __index = setmetatable(utf8, { __index = string }) })
     -- 拓展布尔类型
     debug.setmetatable(false,
         {
@@ -70,6 +71,8 @@ return function()
             },
         })
 
+    --使 type 函数支持读取 __type
+    _G.type = require("type")
     _G.private = require("annotations.private")
     _G.public = require("annotations.public")
     _G.dump = require("dump")

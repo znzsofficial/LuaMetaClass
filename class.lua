@@ -21,6 +21,9 @@ return setmetatable({
         end
         -- 设置相等性的比较函数，比较类名是否相同
         cls.__eq = function(self, other)
+            if not type(other) == "class" then
+                return false
+            end
             return rawequal(self, other)
                 or (getmetatable(self).__name == getmetatable(other).__name)
         end
@@ -36,22 +39,20 @@ return setmetatable({
             __tostring = cls.__tostring,
             __call = cls.__call,
             __eq = cls.__eq,
+            __type = "class"
         })
 
         -- 判断是否继承自另一个类
-        if type(cls.__extend) == "table" and cls.__extend ~= null then
-            if not cls.__extend then
-                error("InvalidExtendException : " ..
-                    tostring(cls) .. " Attempt to extend a table value")
-            end
+        if type(cls.__extend) == "class" then
             -- 判断是否使用 open 修饰符
             if not cls.__extend.__open then
-                error("InvalidExtendException : Attempt to extend a final class " .. cls.__extend.__name)
+                error("InvalidExtendException : " ..
+                    tostring(cls) .. " attempt to extend a final class " .. cls.__extend.__name)
             end
         elseif cls.__extend ~= null then
             -- 如果父类不是一个 class，则报错
             error("InvalidExtendException : " ..
-                tostring(cls) .. " Attempt to extend a " .. type(cls.__extend) .. " value")
+                tostring(cls) .. " attempt to extend a " .. type(cls.__extend) .. " value")
         end
 
         -- 设置实例构造器
@@ -69,7 +70,7 @@ return setmetatable({
             __mt.__call = function(self)
                 return error("ObjectCallException : Attempt to call a object " .. tostring(self))
             end
-
+            __mt.__type = "object"
             -- 创建一个空表，作为实例对象
             local instance = setmetatable({}, __mt)
             -- 如果存在初始化函数，则调用

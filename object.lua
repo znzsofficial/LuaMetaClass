@@ -16,32 +16,32 @@ return setmetatable({
         cls.__tostring = function(self)
             return "object " .. self.__name
         end
-        -- 设置相等性的比较函数，比较类名是否相同
+        -- 设置相等性的比较函数，比较对象名是否相同
         cls.__eq = function(self, other)
+            if not type(other) == "object" then
+                return false
+            end
             return rawequal(self, other)
                 or (getmetatable(self).__name == getmetatable(other).__name)
         end
         -- 设置 call 元方法，用于创建实例
         cls.__call = function(self)
-            error("InstantiationException : Attempt to instantiate a object " .. self.__name)
+            error("InstantiationException : Attempt to instantiate a object declaration " .. self.__name)
         end
 
         cls.__extend = config.extend or null
 
         -- 判断是否继承自另一个类
-        if type(cls.__extend) == "table" and cls.__extend ~= null then
-            if not cls.__extend then
-                error("InvalidExtendException : " ..
-                    tostring(cls) .. " Attempt to extend a table value")
-            end
+        if type(cls.__extend) == "class" then
             -- 判断是否使用 open 修饰符
             if not cls.__extend.__open then
-                error("InvalidExtendException : Attempt to extend a final class " .. cls.__extend.__name)
+                error("InvalidExtendException : " ..
+                    tostring(cls) .. " attempt to extend a final class " .. cls.__extend.__name)
             end
         elseif cls.__extend ~= null then
             -- 如果父类不是一个 class，则报错
             error("InvalidExtendException : " ..
-                tostring(cls) .. " Attempt to extend a " .. type(cls.__extend) .. " value")
+                tostring(cls) .. " attempt to extend a " .. type(cls.__extend) .. " value")
         end
 
         -- 设置元表，用于处理类的各种操作
@@ -50,6 +50,7 @@ return setmetatable({
             __tostring = cls.__tostring,
             __call = cls.__call,
             __eq = cls.__eq,
+            __type = "object"
         })
 
         -- 使用 fields 表定义字段

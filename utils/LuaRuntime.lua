@@ -3,17 +3,17 @@ local _M = {}
 _M.getSystemName = function()
   local path = package.cpath
   if path:match("%.so") then
----@diagnostic disable-next-line: undefined-global
-    if activity and luajava and this then
+    ---@diagnostic disable-next-line: undefined-field
+    if _G.activity and _G.luajava and _G.this then
       return "Android"
-     else
+    else
       return "Linux"
     end
-   elseif path:match("%.dll") then
+  elseif path:match("%.dll") then
     return "Windows"
-   elseif path:match("%.dylib") then
+  elseif path:match("%.dylib") then
     return "macOS"
-   else
+  else
     error("UnknownOperatingSystemExecption", 0)
   end
 end

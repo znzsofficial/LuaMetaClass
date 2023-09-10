@@ -51,10 +51,9 @@ emp:todo("开发时光客App")
 empx:say("lua 得了相思病")
 
 print(yjp)
+print(tostring(emp))
 -- 访问final属性
 print(emp:getSpecies())
--- 打印对象
-print(tostring(emp))
 
 local KFC = object "KFC" {
   fields = {

@@ -1,6 +1,6 @@
 ---@param t table
----@param seen table
----@param indent string
+---@param seen table|nil
+---@param indent string|nil
 return function(t, seen, indent)
   seen = seen or {}
   indent = indent or ""
@@ -16,7 +16,7 @@ return function(t, seen, indent)
         end
       end
       return "<function>" .. tostring(value) .. "\n" .. infoStr
-    elseif type(value) == "table" then
+    elseif type(value) == "table" or type(value) == "class" or type(value) == "object" then
       -- 表类型处理
       local str = dump(value, seen, indent .. " ")
       if getmetatable(value) then
@@ -32,7 +32,7 @@ return function(t, seen, indent)
     end
   end
 
-  if type(t) ~= "table" then
+  if not (type(t) == "table" or type(t) == "class" or type(t) == "object") then
     return tostring(t)
   end
 
