@@ -6,9 +6,7 @@ local function annotation(var, param)
                 __call = function(_, ...)
                     return var(...)
                 end,
-                __type = (function()
-                    return type(var)
-                end),
+                __type = type(var),
                 __newindex = (function()
                     return nil
                 end),
@@ -27,9 +25,7 @@ local function annotation(var, param)
                 __tostring = (function()
                     return var
                 end),
-                __type = (function()
-                    return type(var)
-                end),
+                __type = type(var),
                 __newindex = (function()
                     return nil
                 end),
