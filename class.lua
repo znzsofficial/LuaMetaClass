@@ -122,7 +122,7 @@ return setmetatable({
         end
 
         -- 使用 overrides 表重写父类方法
-        if type(config.overrides) == "table" and cls.__extend ~= null then
+        if type(config.overrides) == "table" then
             for name, fn in pairs(config.overrides) do
                 local super = rawget(cls.__extend, name)
                 if super then
