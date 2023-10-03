@@ -1,7 +1,8 @@
 require("init")()
 
 -- 定义基类
-local Person = class "Person" {
+class "Person" extends "Any" {
+  -- package = "com.lua",
   open = true,
   init = function(self, name, age)
     self.name = name
@@ -23,8 +24,7 @@ local Person = class "Person" {
 }
 
 -- 定义派生类
-local Employee = class "Employee" {
-  extend = Person,
+class "Employee" extends "Person" {
   init = function(self, name, age, position)
     self.__extend:__init(name, age)
     self.position = position
@@ -71,7 +71,7 @@ KFC.V50()
 
 -- print(dump(KFC))
 
-local Ticker = require("utils.Ticker")
+require("utils.Ticker")
 
 local count = 0
 

@@ -1,4 +1,7 @@
 -- 一个还不完善的注解
+---@param var any
+---@param param string
+---@return any<table>
 local function annotation(var, param)
     if type(var) == "function" then
         return setmetatable({ param = param },
