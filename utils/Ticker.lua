@@ -12,6 +12,7 @@ local command = commands[require("utils.LuaRuntime").getSystemName()]
 
 ---@class Ticker
 class "Ticker" extends "Any" {
+    open = true,
     fields = {
         period = 100,
         enabled = false,

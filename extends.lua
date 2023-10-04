@@ -5,8 +5,7 @@ return setmetatable({
 
         cls.__index = cls
         -- 设置类名
-        cls.__name = __oopSpace.__className
-        __oopSpace.__className = nil
+        cls.__name = extends.__className
         -- 设置初始化函数，如果没有提供，则默认为空
         cls.__init = type(config.init) == "function"
             and config.init
@@ -30,12 +29,15 @@ return setmetatable({
         cls.__call = function(self, ...)
             return self:__constructor(...)
         end
-        
-        if __oopSpace.__parentClass == "Any" then
+
+        if extends.__parentClass == "Any" then
             cls.__extend = null
         else
-            cls.__extend = type(_G[__oopSpace.__parentClass]) == "class" and _G[__oopSpace.__parentClass] or null
+            cls.__extend = type(_G[extends.__parentClass]) == "class" and _G[extends.__parentClass] or null
         end
+
+        extends.__className = null
+        extends.__parentClass = null
 
         -- 设置元表，用于处理类的各种操作
         setmetatable(cls, {
@@ -106,8 +108,7 @@ return setmetatable({
             })
             for name, v in pairs(config.final) do
                 rawset(cls.__final, name, v)
-                cls["get" .. name] = function
-                (self)
+                cls["get" .. name] = function(self)
                     return self.__final[name]
                 end
             end
@@ -144,11 +145,13 @@ return setmetatable({
         end
         -- 将创建的类放在全局表里
         _G[cls.__name] = cls
-    end
+    end,
+    __parentClass = null,
+    __className = null,
 }, {
     ---@param parent string
     __call = function(self, parent)
-        __oopSpace.__parentClass = parent
+        extends.__parentClass = parent
         ---@param config table
         return function(config)
             self.build(config)

@@ -55,7 +55,7 @@ print(tostring(emp))
 -- 访问final属性
 print(emp:getSpecies())
 
-local KFC = object "KFC" {
+object "KFC" {
   fields = {
     Crazy = "Thursday",
   },
@@ -73,16 +73,20 @@ KFC.V50()
 
 require("utils.Ticker")
 
-local count = 0
+-- 测试对象声明
+object "MyTicker" {
+  Ticker,
+  fields = {
+    count = 0
+  }
+}
 
-local ti = Ticker()
-
-ti:setOnTickListener(function()
+MyTicker:setOnTickListener(function()
   print("onTick")
-  count = count + 1
-  if count == 1 then
-    ti:stop()
+  MyTicker.count = MyTicker.count + 1
+  if MyTicker.count == 1 then
+    MyTicker:stop()
   end
 end)
 
-ti:start()
+MyTicker:start()

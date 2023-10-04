@@ -71,15 +71,11 @@ return function()
             },
         })
 
-    -- 临时存放类名的表
-    _G.__oopSpace = {}
     --使 type 函数支持读取 __type
     _G.type = require("type")
-    _G.private = require("annotations.private")
-    _G.public = require("annotations.public")
     _G.dump = require("dump")
     _G.null = require("null")
-    _G.class = require("class")
     _G.extends = require("extends")
+    _G.class = require("class")
     _G.object = require("object")
 end
