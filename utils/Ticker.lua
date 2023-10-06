@@ -1,15 +1,3 @@
-if not _G.class then
-    return
-end
-
-local commands = {
-    Android = "sleep", 
-    Linux = "sleep", 
-    Windows = "timeout"
-}
-
-local command = commands[require("utils.LuaRuntime").getSystemName()]
-
 ---@class Ticker
 class "Ticker" extends "Any" {
     open = true,
@@ -17,6 +5,12 @@ class "Ticker" extends "Any" {
         period = 100,
         enabled = false,
         onTick = null,
+        commands = {
+            Android = "sleep", 
+            Linux = "sleep", 
+            Windows = "timeout"
+        },
+        system = require("utils.LuaRuntime").getSystemName(),
     },
     methods = {
         ---@param self any
@@ -39,7 +33,7 @@ class "Ticker" extends "Any" {
                 if elapsedTime < self.period then
                     -- 等待剩余时间
                     local remainingTime = self.period - elapsedTime
-                    os.execute(command .. " " .. math.floor(remainingTime / 1000))
+                    os.execute(self.commands[self.system] .. " " .. math.floor(remainingTime / 1000))
                 end
             end
         end,
