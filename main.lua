@@ -1,5 +1,4 @@
 require("init")()
-
 -- 定义基类
 class "Person" extends "Any" {
   -- package = "com.lua",

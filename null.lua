@@ -18,5 +18,6 @@ return setmetatable({}, {
     __concat = (function()
         return nil
     end),
+    __name = "null",
     __metatable = { __type = "null" },
 })
